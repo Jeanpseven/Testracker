@@ -4,8 +4,7 @@ import gzip
 import shutil
 import os
 from geolite2 import geolite2
-
-app = Flask(__name__)
+from datetime import datetime
 
 # Função para baixar e descompactar o GeoLite2
 def download_geolite2():
@@ -13,20 +12,49 @@ def download_geolite2():
     local_path = "GeoLite2-City.mmdb.gz"
     geoip_path = "GeoLite2-City.mmdb"
 
-    # Baixar o arquivo compactado
-    urlretrieve(download_url, local_path)
+    try:
+        # Baixar o arquivo compactado
+        urlretrieve(download_url, local_path)
 
-    # Descompactar o arquivo
-    with gzip.open(local_path, 'rb') as f_in, open(geoip_path, 'wb') as f_out:
-        shutil.copyfileobj(f_in, f_out)
+        # Descompactar o arquivo
+        with gzip.open(local_path, 'rb') as f_in, open(geoip_path, 'wb') as f_out:
+            shutil.copyfileobj(f_in, f_out)
 
-    # Remover o arquivo compactado
-    os.remove(local_path)
+        # Remover o arquivo compactado
+        os.remove(local_path)
 
-# Verificar se o arquivo GeoLite2 existe, se não, fazer o download
-if not os.path.exists("GeoLite2-City.mmdb"):
+        print("GeoLite2 baixado com sucesso!")
+
+    except Exception as e:
+        print(f"Erro durante o download/descompactação do GeoLite2: {e}")
+
+# Verificar se o arquivo GeoLite2 existe e se está desatualizado
+def is_geoip_outdated():
+    geoip_path = "GeoLite2-City.mmdb"
+
+    if not os.path.exists(geoip_path):
+        return True
+
+    # Comparar datas de modificação
+    current_time = datetime.now()
+    modified_time = datetime.fromtimestamp(os.path.getmtime(geoip_path))
+    days_difference = (current_time - modified_time).days
+
+    # Se o arquivo tem mais de 7 dias, considerar desatualizado
+    return days_difference > 7
+
+# Instalar o pacote GeoIP2 para Python diretamente do GitHub
+try:
+    os.system("pip install git+https://github.com/maxmind/GeoIP2-python.git")
+    print("Pacote GeoIP2-python instalado com sucesso!")
+except Exception as e:
+    print(f"Erro durante a instalação do pacote GeoIP2-python: {e}")
+
+if is_geoip_outdated():
     print("Baixando GeoLite2...")
     download_geolite2()
+
+app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -44,5 +72,4 @@ def index():
         return render_template('index.html')
 
 if __name__ == '__main__':
-    download_geolite2()
     app.run(host='0.0.0.0', port=80)
