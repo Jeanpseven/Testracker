@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Location</title>
+</head>
+<body>
+    <h1>Track User Location</h1>
+    <form method="post">
+        <input type="submit" value="Submit">
+    </form>
+
+    {% if latitude and longitude and location %}
+        <h2>Location: {{ location }}</h2>
+        <h3>Latitude: {{ latitude }}</h3>
+        <h3>Longitude: {{ longitude }}</h3>
+    {% elif error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+</body>
+</html>
