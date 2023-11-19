@@ -8,7 +8,7 @@ from datetime import datetime
 
 # Função para baixar e descompactar o GeoLite2
 def download_geolite2():
-    download_url = "https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.mmdb.gz"
+    download_url = "https://github.com/maxmind/GeoLite2-City/releases/latest/download/GeoLite2-City.mmdb.gz"
     local_path = "GeoLite2-City.mmdb.gz"
     geoip_path = "GeoLite2-City.mmdb"
 
@@ -30,6 +30,9 @@ def download_geolite2():
 
 # Verificar se o arquivo GeoLite2 existe e se está desatualizado
 def is_geoip_outdated():
+
+# Verificar se o arquivo GeoLite2 existe e se está desatualizado
+def is_geoip_outdated():
     geoip_path = "GeoLite2-City.mmdb"
 
     if not os.path.exists(geoip_path):
@@ -42,13 +45,6 @@ def is_geoip_outdated():
 
     # Se o arquivo tem mais de 7 dias, considerar desatualizado
     return days_difference > 7
-
-# Instalar o pacote GeoIP2 para Python diretamente do GitHub
-try:
-    os.system("pip install git+https://github.com/maxmind/GeoIP2-python.git")
-    print("Pacote GeoIP2-python instalado com sucesso!")
-except Exception as e:
-    print(f"Erro durante a instalação do pacote GeoIP2-python: {e}")
 
 if is_geoip_outdated():
     print("Baixando GeoLite2...")
