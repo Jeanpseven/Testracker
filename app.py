@@ -30,9 +30,6 @@ def download_geolite2():
 
 # Verificar se o arquivo GeoLite2 existe e se está desatualizado
 def is_geoip_outdated():
-
-# Verificar se o arquivo GeoLite2 existe e se está desatualizado
-def is_geoip_outdated():
     geoip_path = "GeoLite2-City.mmdb"
 
     if not os.path.exists(geoip_path):
