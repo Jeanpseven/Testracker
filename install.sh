@@ -1,9 +1,14 @@
 #!/bin/bash
 
+echo "Instalando dependências..."
+
+# Instalar o pacote GeoIP2 para Python diretamente do GitHub
+pip install git+https://github.com/maxmind/GeoIP2-python.git
+
 echo "Baixando o GeoLite2..."
 
-# URL para o arquivo GeoLite2-City.mmdb.gz
-download_url="https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.mmdb.gz"
+# URL para o arquivo GeoLite2-City.mmdb.gz via GitHub
+download_url="https://github.com/maxmind/GeoLite2-City/releases/latest/download/GeoLite2-City.mmdb.gz"
 
 # Nome do arquivo compactado
 zip_file="GeoLite2-City.mmdb.gz"
