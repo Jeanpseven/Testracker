@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request
-from upnpc import UPnP
 import json
 import requests
 import logging
@@ -25,18 +24,6 @@ def get_geo_data(ip_address):
 
     except Exception as e:
         return f"Erro ao obter informações de geolocalização: {e}"
-
-# Função para configurar o redirecionamento de porta usando UPnP
-def configure_upnp():
-    try:
-        upnp = UPnP()
-        upnp.discover()
-        upnp.selectigd()
-        upnp.addportmapping(80, 'TCP', upnp.lanaddr, 80, 'Flask App', '')
-        print("Redirecionamento de porta configurado com sucesso!")
-
-    except Exception as e:
-        print(f"Erro ao configurar o redirecionamento de porta UPnP: {e}")
 
 # Função para gerar o link com base no endereço IP público
 def generate_link(ip_address):
@@ -84,5 +71,4 @@ def index():
         return render_template('index.html')
 
 if __name__ == '__main__':
-    configure_upnp()
     app.run(host='0.0.0.0', port=80, debug=False)
