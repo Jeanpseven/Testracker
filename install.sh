@@ -29,8 +29,8 @@ fi
 
 echo "Baixando o GeoLite2..."
 
-# URL para o arquivo GeoLite2-City.mmdb.gz via GitHub
-download_url="https://github.com/maxmind/GeoLite2-City/releases/latest/download/GeoLite2-City.mmdb.gz"
+# URL para o arquivo GeoLite2-City.mmdb.gz via GitHub (raw)
+download_url="https://github.com/wp-statistics/GeoLite2-City/raw/master/GeoLite2-City.mmdb.gz"
 
 # Nome do arquivo compactado
 zip_file="GeoLite2-City.mmdb.gz"
