@@ -1,8 +1,15 @@
 #!/bin/bash
 
-echo "Instalando dependências..."
+# Nome do ambiente virtual
+venv_name="myenv"
 
-# Instalar o pacote GeoIP2 para Python diretamente do GitHub
+echo "Instalando dependências e criando ambiente virtual..."
+
+# Criar e ativar o ambiente virtual
+python -m venv $venv_name
+source ./$venv_name/bin/activate
+
+# Instalar o pacote GeoIP2 para Python diretamente do GitHub dentro do ambiente virtual
 pip install git+https://github.com/maxmind/GeoIP2-python.git
 
 echo "Baixando o GeoLite2..."
@@ -23,3 +30,6 @@ wget $download_url
 gunzip $zip_file
 
 echo "GeoLite2 baixado com sucesso!"
+
+# Desativar o ambiente virtual
+deactivate
