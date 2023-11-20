@@ -3,6 +3,7 @@ from upnpc import UPnP
 import json
 import requests
 import logging
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -58,6 +59,7 @@ def index():
         ip_address = request.remote_addr
         client_ips.append(ip_address)  # Adiciona o IP à lista
 
+        # Obter informações de geolocalização
         geo_data = get_geo_data(ip_address)
         
         if "Erro" in geo_data:
@@ -66,11 +68,16 @@ def index():
         # Adicionando lógica para obter coordenadas geográficas precisas
         latitude, longitude = geo_data.get('loc', '').split(',')
         
+        # Adicionar data, hora e nome de usuário ao log
+        current_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        username = request.form.get('username', 'N/A')  # Substitua 'N/A' pelo valor padrão desejado
+        log_entry = f"{current_datetime} - IP: {ip_address}, Usuário: {username}, Localização: {geo_data.get('city', '')}, Latitude: {latitude}, Longitude: {longitude}"
+        
+        # Adicionar a entrada ao log
+        logging.info(log_entry)
+
         original_link = generate_link(ip_address)
         shortened_link = shorten_link(original_link)
-
-        # Log de informações
-        logging.info(f"IP: {ip_address}, Localização: {geo_data.get('city', '')}, Latitude: {latitude}, Longitude: {longitude}")
 
         return render_template('index.html', latitude=latitude, longitude=longitude, original_link=original_link, shortened_link=shortened_link)
     else:
