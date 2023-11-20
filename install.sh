@@ -36,7 +36,7 @@ download_url="https://github.com/wp-statistics/GeoLite2-City/raw/master/GeoLite2
 zip_file="GeoLite2-City.mmdb.gz"
 
 # Baixar o arquivo compactado
-wget $download_url
+wget --output-document=$zip_file $download_url
 
 # Descompactar o arquivo
 gunzip $zip_file
